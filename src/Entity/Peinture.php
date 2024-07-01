@@ -31,8 +31,8 @@ class Peinture
     #[ORM\Column(nullable: true)]
     private ?int $prize = null;
 
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $quantity = null;
+    #[ORM\Column(nullable: true)]
+    private ?int $quantity = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $createdAt = null;
@@ -52,9 +52,11 @@ class Peinture
     #[ORM\OneToMany(targetEntity: Certificat::class, mappedBy: 'peinture')]
     private Collection $certificats;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $method = null;
+
     public function __construct()
     {
-        $this->createdAt = new \DateTime();
         $this->ventes = new ArrayCollection();
         $this->certificats = new ArrayCollection();
     }
@@ -124,12 +126,12 @@ class Peinture
         return $this;
     }
 
-    public function getQuantity(): ?string
+    public function getQuantity(): ?int
     {
         return $this->quantity;
     }
 
-    public function setQuantity(?string $quantity): static
+    public function setQuantity(?int $quantity): static
     {
         $this->quantity = $quantity;
 
@@ -216,6 +218,18 @@ class Peinture
                 $certificat->setPeinture(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getMethod(): ?string
+    {
+        return $this->method;
+    }
+
+    public function setMethod(?string $method): static
+    {
+        $this->method = $method;
 
         return $this;
     }
