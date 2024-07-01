@@ -69,12 +69,69 @@ class SecurityController extends AbstractController
         return new Response('Client registered successfully', Response::HTTP_CREATED);
     }
 
-    #[Route('/api/clients/{id}', name: 'client_get', methods: ['GET'])]
-    public function get(int $id): Response
+    #[Route('/api/clients/{email}', name: 'client_get', methods: ['GET'])]
+    public function getClientByEmail(string $email): Response
     {
-        $client = $this->clientRepository->find($id);
+        $client = $this->clientRepository->findOneBy(['email' => $email]);
+
         if (!$client) {
             return new Response('Client not found', Response::HTTP_NOT_FOUND);
+        }
+
+        $clientData = [
+            'id' => $client->getId(),
+            'email' => $client->getEmail(),
+            'roles' => $client->getRole(),
+            'firstname' => $client->getFirstname(),
+            'lastname' => $client->getLastname(),
+            'adresse' => $client->getAdresse(),
+            'complement' => $client->getComplement(),
+            'town' => $client->getTown(),
+            'postalCode' => $client->getPostalCode(),
+            'phone' => $client->getPhone(),
+        ];
+
+        return $this->json($clientData);
+    }
+
+    #[Route('/api/clients', name: 'clients_get_all', methods: ['GET'])]
+    public function getClients(): Response
+    {
+        $clients = $this->clientRepository->findAll();
+
+        if (!$clients) {
+            return new Response('No clients found', Response::HTTP_NOT_FOUND);
+        }
+
+        $clientsData = [];
+
+        foreach ($clients as $client) {
+            $clientData = [
+                'id' => $client->getId(),
+                'email' => $client->getEmail(),
+                'roles' => $client->getRole(),
+                'firstname' => $client->getFirstname(),
+                'lastname' => $client->getLastname(),
+                'adresse' => $client->getAdresse(),
+                'complement' => $client->getComplement(),
+                'town' => $client->getTown(),
+                'postalCode' => $client->getPostalCode(),
+                'phone' => $client->getPhone(),
+            ];
+
+            $clientsData[] = $clientData;
+        }
+
+        return $this->json($clientsData);
+    }
+
+    #[Route('/api/clients/login/{email}/{password}', name: 'client_login', methods: ['GET'])]
+    public function getClientForLogin(string $email, string $password): Response
+    {
+        $client = $this->clientRepository->findOneBy(['email' => $email, 'password' => $password]);
+
+        if (!$client) {
+            return new Response('Bad Log', Response::HTTP_NOT_FOUND);
         }
 
         $clientData = [
