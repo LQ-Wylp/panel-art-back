@@ -14,6 +14,9 @@ class Certificat
     #[ORM\Column]
     private ?int $id = null;
 
+    #[ORM\Column(type: Types::STRING, length: 255, unique: true)]
+    private ?string $idCertificat = null;
+
     #[ORM\ManyToOne(inversedBy: 'certificats')]
     private ?Peinture $peinture = null;
 
@@ -23,14 +26,34 @@ class Certificat
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $generatedAt = null;
 
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
+    private ?\DateTimeInterface $dateSignature = null;
+
+    #[ORM\Column(type: Types::STRING, length: 255)]
+    private ?string $signature = null;
+
     public function __construct()
     {
         $this->generatedAt = new \DateTime();
+        $this->dateSignature = new \DateTime();
+        $this->idCertificat = uniqid('cert_', true);
     }
 
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    public function getIdCertificat(): ?string
+    {
+        return $this->idCertificat;
+    }
+
+    public function setIdCertificat(string $idCertificat): static
+    {
+        $this->idCertificat = $idCertificat;
+
+        return $this;
     }
 
     public function getPeinture(): ?Peinture
@@ -65,6 +88,30 @@ class Certificat
     public function setGeneratedAt(?\DateTimeInterface $generatedAt): static
     {
         $this->generatedAt = $generatedAt;
+
+        return $this;
+    }
+
+    public function getDateSignature(): ?\DateTimeInterface
+    {
+        return $this->dateSignature;
+    }
+
+    public function setDateSignature(?\DateTimeInterface $dateSignature): static
+    {
+        $this->dateSignature = $dateSignature;
+
+        return $this;
+    }
+
+    public function getSignature(): ?string
+    {
+        return $this->signature;
+    }
+
+    public function setSignature(string $signature): static
+    {
+        $this->signature = $signature;
 
         return $this;
     }

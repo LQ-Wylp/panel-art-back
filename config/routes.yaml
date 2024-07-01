@@ -3,3 +3,9 @@ controllers:
         path: ../src/Controller/
         namespace: App\Controller
     type: attribute
+
+
+generate_certificate:
+    path: /api/generate-certificate
+    controller: App\Controller\CertificateController::generate
+    methods: [POST]
