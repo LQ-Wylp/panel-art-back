@@ -149,4 +149,54 @@ class SecurityController extends AbstractController
 
         return $this->json($clientData);
     }
+
+    #[Route('/api/clients/{id}', name: 'client_update', methods: ['PUT'])]
+    public function updateClient(int $id, Request $request, ValidatorInterface $validator): Response
+    {
+        $client = $this->clientRepository->find($id);
+
+        if (!$client) {
+            return new Response('Client not found', Response::HTTP_NOT_FOUND);
+        }
+
+        $data = json_decode($request->getContent(), true);
+
+        $client->setEmail($data['email'] ?? $client->getEmail());
+        $client->setRole($data['roles'] ?? $client->getRole());
+        $client->setFirstname($data['firstname'] ?? $client->getFirstname());
+        $client->setLastname($data['lastname'] ?? $client->getLastname());
+        $client->setAdresse($data['adresse'] ?? $client->getAdresse());
+        $client->setComplement($data['complement'] ?? $client->getComplement());
+        $client->setTown($data['town'] ?? $client->getTown());
+        $client->setPostalCode($data['postalCode'] ?? $client->getPostalCode());
+        $client->setPhone($data['phone'] ?? $client->getPhone());
+
+        if (isset($data['password'])) {
+            $client->setPassword($data['password']);
+        }
+
+        $errors = $validator->validate($client);
+        if (count($errors) > 0) {
+            return $this->json(['errors' => $errors], Response::HTTP_BAD_REQUEST);
+        }
+
+        $this->entityManager->flush();
+
+        return new Response('Client updated successfully', Response::HTTP_OK);
+    }
+
+    #[Route('/api/clients/{id}', name: 'client_delete', methods: ['DELETE'])]
+    public function deleteClient(int $id): Response
+    {
+        $client = $this->clientRepository->find($id);
+
+        if (!$client) {
+            return new Response('Client not found', Response::HTTP_NOT_FOUND);
+        }
+
+        $this->entityManager->remove($client);
+        $this->entityManager->flush();
+
+        return new Response('Client deleted successfully', Response::HTTP_OK);
+    }
 }

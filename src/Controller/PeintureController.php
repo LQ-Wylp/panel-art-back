@@ -107,4 +107,49 @@ class PeintureController extends AbstractController
 
         return new Response('Peinture registered successfully', Response::HTTP_CREATED);
     }
+
+    #[Route('/api/peintures/{id}', name: 'peinture_update', methods: ['PUT'])]
+    public function updatePeinture(int $id, Request $request, ValidatorInterface $validator): Response
+    {
+        $peinture = $this->peintureRepository->find($id);
+
+        if (!$peinture) {
+            return new Response('Peinture not found', Response::HTTP_NOT_FOUND);
+        }
+
+        $data = json_decode($request->getContent(), true);
+
+        $peinture->setTitle($data['title'] ?? $peinture->getTitle());
+        $peinture->setHeight($data['height'] ?? $peinture->getHeight());
+        $peinture->setWidth($data['width'] ?? $peinture->getWidth());
+        $peinture->setDescription($data['description'] ?? $peinture->getDescription());
+        $peinture->setQuantity($data['quantity'] ?? $peinture->getQuantity());
+        $peinture->setCreatedAt(new \DateTime($data['createdAt'] ?? $peinture->getCreatedAt()->format('Y-m-d H:i:s')));
+        $peinture->setMethod($data['method'] ?? $peinture->getMethod());
+        $peinture->setPrize($data['prize'] ?? $peinture->getPrize());
+
+        $errors = $validator->validate($peinture);
+        if (count($errors) > 0) {
+            return $this->json(['errors' => $errors], Response::HTTP_BAD_REQUEST);
+        }
+
+        $this->entityManager->flush();
+
+        return new Response('Peinture updated successfully', Response::HTTP_OK);
+    }
+
+    #[Route('/api/peintures/{id}', name: 'peinture_delete', methods: ['DELETE'])]
+    public function deletePeinture(int $id): Response
+    {
+        $peinture = $this->peintureRepository->find($id);
+
+        if (!$peinture) {
+            return new Response('Peinture not found', Response::HTTP_NOT_FOUND);
+        }
+
+        $this->entityManager->remove($peinture);
+        $this->entityManager->flush();
+
+        return new Response('Peinture deleted successfully', Response::HTTP_OK);
+    }
 }

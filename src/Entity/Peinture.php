@@ -43,13 +43,14 @@ class Peinture
     /**
      * @var Collection<int, Vente>
      */
-    #[ORM\OneToMany(targetEntity: Vente::class, mappedBy: 'peinture')]
+    #[ORM\OneToMany(targetEntity: Vente::class, mappedBy: 'peinture', cascade: ['remove'])]
+
     private Collection $ventes;
 
     /**
      * @var Collection<int, Certificat>
      */
-    #[ORM\OneToMany(targetEntity: Certificat::class, mappedBy: 'peinture')]
+    #[ORM\OneToMany(targetEntity: Certificat::class, mappedBy: 'peinture', cascade: ['remove'])]
     private Collection $certificats;
 
     #[ORM\Column(length: 255, nullable: true)]
