@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Entity;
 
 use App\Repository\CertificatRepository;
@@ -13,9 +12,6 @@ class Certificat
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
-
-    #[ORM\Column(type: Types::STRING, length: 255, unique: true)]
-    private ?string $idCertificat = null;
 
     #[ORM\ManyToOne(inversedBy: 'certificats')]
     private ?Peinture $peinture = null;
@@ -36,24 +32,11 @@ class Certificat
     {
         $this->generatedAt = new \DateTime();
         $this->dateSignature = new \DateTime();
-        $this->idCertificat = uniqid('cert_', true);
     }
 
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getIdCertificat(): ?string
-    {
-        return $this->idCertificat;
-    }
-
-    public function setIdCertificat(string $idCertificat): static
-    {
-        $this->idCertificat = $idCertificat;
-
-        return $this;
     }
 
     public function getPeinture(): ?Peinture
@@ -64,7 +47,6 @@ class Certificat
     public function setPeinture(?Peinture $peinture): static
     {
         $this->peinture = $peinture;
-
         return $this;
     }
 
@@ -76,7 +58,6 @@ class Certificat
     public function setClient(?Client $client): static
     {
         $this->client = $client;
-
         return $this;
     }
 
@@ -88,7 +69,6 @@ class Certificat
     public function setGeneratedAt(?\DateTimeInterface $generatedAt): static
     {
         $this->generatedAt = $generatedAt;
-
         return $this;
     }
 
@@ -100,7 +80,6 @@ class Certificat
     public function setDateSignature(?\DateTimeInterface $dateSignature): static
     {
         $this->dateSignature = $dateSignature;
-
         return $this;
     }
 
@@ -112,7 +91,6 @@ class Certificat
     public function setSignature(string $signature): static
     {
         $this->signature = $signature;
-
         return $this;
     }
 }

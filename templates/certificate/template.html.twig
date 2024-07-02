@@ -4,7 +4,7 @@
 <head>
     <style>
         body {
-            background: url('{{ asset('path/to/certificate/image.jpg') }}') no-repeat center center fixed;
+            background: url('{{ asset('\img\image.png') }}') no-repeat center center fixed;
             background-size: cover;
             font-family: Arial, sans-serif;
         }
@@ -21,15 +21,16 @@
 </head>
 <body>
     <div class="content">
+    <p>Certificat d'autenticité</p>
         <h1>{{ title }}</h1>
-        <p>Certificat décerné à</p>
-        <h2>{{ name }}</h2>
-        <p>Pour avoir réalisé une œuvre en</p>
+        <p>Oeuvre de l'artiste</p>
+        {# <h2>{{ name }}</h2> #}
+        <p>œuvre au format</p>
         <h3>{{ dimensions }}</h3>
-        <p>en utilisant le médium suivant:</p>
+        <p>en utilisant la méthode suivante:</p>
         <h3>{{ medium }}</h3>
         <p>le {{ date }}</p>
-        <p>Identifiant du certificat : {{ id_certificat }}</p>
+        <p>Identifiant du certificat : {{ id }}</p>
         <p>Date de signature : {{ date_signature }}</p>
         <p>Signature : {{ signature }}</p>
     </div>

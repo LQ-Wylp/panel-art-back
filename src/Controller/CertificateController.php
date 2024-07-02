@@ -12,6 +12,7 @@ use Dompdf\Dompdf;
 use Dompdf\Options;
 use Symfony\Component\Routing\Annotation\Route;
 
+
 class CertificateController extends AbstractController
 {
     private $entityManager;
@@ -54,12 +55,12 @@ class CertificateController extends AbstractController
         // Génère le HTML du certificat avec les données de la peinture et du certificat
         $html = $this->renderView('certificate/template.html.twig', [
             'title' => $peinture->getTitle(),
-            'name' => $peinture->getName(),
-            'dimensions' => $peinture->getDimensions(),
-            'date' => $peinture->getDate()->format('Y-m-d'),
-            'medium' => $peinture->getMedium(),
-            'id_certificat' => $certificat->getIdCertificat(),
-            'date_signature' => $certificat->getDateSignature()->format('Y-m-d H:i:s'),
+            // 'name' => $peinture->getName(),
+            'dimensions' => $peinture->getWidth() . 'x' . $peinture->getHeight(),
+            'date' => $peinture->getCreatedAt()->format('Y-m-d H:i:s'), // Utilise getCreatedAt() pour récupérer la date de création
+            'medium' => $peinture->getMethod(),
+            'id' => $certificat->getId(), // Utilise getId() pour récupérer l'ID du certificat
+            'date_signature' => (new \DateTime())->format('Y-m-d H:i:s'),
             'signature' => $certificat->getSignature(),
         ]);
 
@@ -75,7 +76,7 @@ class CertificateController extends AbstractController
         $dompdf->loadHtml($html);
 
         // Définit la taille du papier et l'orientation
-        $dompdf->setPaper('A4', 'portrait');
+        $dompdf->setPaper(array(0, 0, 633, 494), 'portrait');
 
         // Rend le HTML en PDF
         $dompdf->render();
@@ -83,6 +84,7 @@ class CertificateController extends AbstractController
         // Renvoie la réponse avec le PDF en tant que contenu
         return new Response($dompdf->output(), 200, [
             'Content-Type' => 'application/pdf',
+            'Content-Disposition' => 'inline; filename="certificat.pdf"'
         ]);
     }
 }
