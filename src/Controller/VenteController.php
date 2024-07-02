@@ -126,4 +126,61 @@ class VenteController extends AbstractController
 
         return new Response('Vente registered successfully', Response::HTTP_CREATED);
     }
+
+    #[Route('/api/ventes/{id}', name: 'vente_update', methods: ['PUT'])]
+    public function updateVente(int $id, Request $request, ValidatorInterface $validator): Response
+    {
+        $vente = $this->venteRepository->find($id);
+
+        if (!$vente) {
+            return new Response('Vente not found', Response::HTTP_NOT_FOUND);
+        }
+
+        $data = json_decode($request->getContent(), true);
+
+        if (isset($data['idClient'])) {
+            $client = $this->clientRepository->find($data['idClient']);
+            if ($client) {
+                $vente->setClient($client);
+            } else {
+                return new Response('Client not found', Response::HTTP_BAD_REQUEST);
+            }
+        }
+
+        if (isset($data['idPeinture'])) {
+            $peinture = $this->peintureRepository->find($data['idPeinture']);
+            if ($peinture) {
+                $vente->setPeinture($peinture);
+            } else {
+                return new Response('Peinture not found', Response::HTTP_BAD_REQUEST);
+            }
+        }
+
+        $vente->setAmount($data['amount'] ?? $vente->getAmount());
+        $vente->setStatus($data['status'] ?? $vente->getStatus());
+
+        $errors = $validator->validate($vente);
+        if (count($errors) > 0) {
+            return $this->json(['errors' => $errors], Response::HTTP_BAD_REQUEST);
+        }
+
+        $this->entityManager->flush();
+
+        return new Response('Vente updated successfully', Response::HTTP_OK);
+    }
+
+    #[Route('/api/ventes/{id}', name: 'vente_delete', methods: ['DELETE'])]
+    public function deleteVente(int $id): Response
+    {
+        $vente = $this->venteRepository->find($id);
+
+        if (!$vente) {
+            return new Response('Vente not found', Response::HTTP_NOT_FOUND);
+        }
+
+        $this->entityManager->remove($vente);
+        $this->entityManager->flush();
+
+        return new Response('Vente deleted successfully', Response::HTTP_OK);
+    }
 }
