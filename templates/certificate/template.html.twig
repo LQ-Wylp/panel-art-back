@@ -21,18 +21,14 @@
 </head>
 <body>
     <div class="content">
-    <p>Certificat d'autenticité</p>
         <h1>{{ title }}</h1>
-        <p>Oeuvre de l'artiste</p>
         {# <h2>{{ name }}</h2> #}
-        <p>œuvre au format</p>
         <h3>{{ dimensions }}</h3>
-        <p>en utilisant la méthode suivante:</p>
+        <p>le {{ date }}</p>  
         <h3>{{ medium }}</h3>
-        <p>le {{ date }}</p>
         <p>Identifiant du certificat : {{ id }}</p>
-        <p>Date de signature : {{ date_signature }}</p>
-        <p>Signature : {{ signature }}</p>
+        <p>{{ signature }}</p>
+        <p>{{ date_signature }}</p>
     </div>
 </body>
 </html>
