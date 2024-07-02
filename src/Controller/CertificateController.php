@@ -47,7 +47,7 @@ class CertificateController extends AbstractController
         $certificat->setPeinture($peinture);
         $certificat->setSignature('Signature Placeholder'); // Remplacer par la signature réelle
 
-        // Persist le certificat dans la base de données
+        // Persiste le certificat dans la base de données
         $this->entityManager->persist($certificat);
         $this->entityManager->flush();
 
