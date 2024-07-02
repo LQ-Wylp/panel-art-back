@@ -10,6 +10,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Dompdf\Dompdf;
 use Dompdf\Options;
+use Symfony\Component\Routing\Annotation\Route;
 
 class CertificateController extends AbstractController
 {
@@ -20,6 +21,7 @@ class CertificateController extends AbstractController
         $this->entityManager = $entityManager;
     }
 
+    #[Route('/api/generate-certificate', name: 'generate_certificat', methods: ['POST'])]
     public function generate(Request $request): Response
     {
         // Récupère les données JSON du corps de la requête
