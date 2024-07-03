@@ -64,11 +64,18 @@ class Client
     #[ORM\Column(type: Types::ARRAY)]
     private array $role = [];
 
+    /**
+     * @var Collection<int, Peinture>
+     */
+    #[ORM\OneToMany(targetEntity: Peinture::class, mappedBy: 'client')]
+    private Collection $peintures;
+
     public function __construct()
     {
         $this->createdAt = new \DateTime();
         $this->ventes = new ArrayCollection();
         $this->certificats = new ArrayCollection();
+        $this->peintures = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -276,6 +283,36 @@ class Client
     public function setRole(array $role): static
     {
         $this->role = $role;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Peinture>
+     */
+    public function getPeintures(): Collection
+    {
+        return $this->peintures;
+    }
+
+    public function addPeinture(Peinture $peinture): static
+    {
+        if (!$this->peintures->contains($peinture)) {
+            $this->peintures->add($peinture);
+            $peinture->setClient($this);
+        }
+
+        return $this;
+    }
+
+    public function removePeinture(Peinture $peinture): static
+    {
+        if ($this->peintures->removeElement($peinture)) {
+            // set the owning side to null (unless already changed)
+            if ($peinture->getClient() === $this) {
+                $peinture->setClient(null);
+            }
+        }
 
         return $this;
     }

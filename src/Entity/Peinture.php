@@ -56,6 +56,10 @@ class Peinture
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $method = null;
 
+    #[ORM\ManyToOne(inversedBy: 'peintures')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Client $client = null;
+
     public function __construct()
     {
         $this->ventes = new ArrayCollection();
@@ -231,6 +235,18 @@ class Peinture
     public function setMethod(?string $method): static
     {
         $this->method = $method;
+
+        return $this;
+    }
+
+    public function getClient(): ?Client
+    {
+        return $this->client;
+    }
+
+    public function setClient(?Client $client): static
+    {
+        $this->client = $client;
 
         return $this;
     }
