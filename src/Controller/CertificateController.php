@@ -46,7 +46,7 @@ class CertificateController extends AbstractController
         // Crée un nouvel objet Certificat
         $certificat = new Certificat();
         $certificat->setPeinture($peinture);
-        $certificat->setSignature('Signature Placeholder'); // Remplacer par la signature réelle
+        // $certificat->setSignature('Signature Placeholder'); // Remplacer par la signature réelle
 
         // Persiste le certificat dans la base de données
         $this->entityManager->persist($certificat);
@@ -60,8 +60,8 @@ class CertificateController extends AbstractController
             'date' => $peinture->getCreatedAt()->format('Y-m-d H:i:s'), // Utilise getCreatedAt() pour récupérer la date de création
             'medium' => $peinture->getMethod(),
             'id' => $certificat->getId(), // Utilise getId() pour récupérer l'ID du certificat
-            'date_signature' => (new \DateTime())->format('Y-m-d H:i:s'),
-            'signature' => $certificat->getSignature(),
+            'generated_at' => (new \DateTime())->format('Y-m-d H:i:s'),
+            // 'signature' => $certificat->getSignature(),
         ]);
 
         // Configure Dompdf

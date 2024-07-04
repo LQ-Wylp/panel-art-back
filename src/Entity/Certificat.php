@@ -22,16 +22,10 @@ class Certificat
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $generatedAt = null;
 
-    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
-    private ?\DateTimeInterface $dateSignature = null;
-
-    #[ORM\Column(type: Types::STRING, length: 255)]
-    private ?string $signature = null;
-
     public function __construct()
     {
         $this->generatedAt = new \DateTime();
-        $this->dateSignature = new \DateTime();
+        // $this->dateSignature = new \DateTime();
     }
 
     public function getId(): ?int
@@ -72,25 +66,5 @@ class Certificat
         return $this;
     }
 
-    public function getDateSignature(): ?\DateTimeInterface
-    {
-        return $this->dateSignature;
-    }
-
-    public function setDateSignature(?\DateTimeInterface $dateSignature): static
-    {
-        $this->dateSignature = $dateSignature;
-        return $this;
-    }
-
-    public function getSignature(): ?string
-    {
-        return $this->signature;
-    }
-
-    public function setSignature(string $signature): static
-    {
-        $this->signature = $signature;
-        return $this;
-    }
+   
 }
