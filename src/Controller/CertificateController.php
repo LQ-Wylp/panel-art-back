@@ -61,7 +61,6 @@ class CertificateController extends AbstractController
             'medium' => $peinture->getMethod(),
             'id' => $certificat->getId(), // Utilise getId() pour récupérer l'ID du certificat
             'generated_at' => (new \DateTime())->format('Y-m-d H:i:s'),
-            // 'signature' => $certificat->getSignature(),
         ]);
 
         // Configure Dompdf
