@@ -38,7 +38,7 @@ class SecurityController extends AbstractController
         // Création d'une nouvelle instance de Client
         $client = new Client();
         $client->setEmail($data['email']);
-        $client->setRole($data['roles'] ?? ['ROLE_USER']);
+        $client->setRole($data['role'] ?? ['ROLE_USER']);
         $client->setFirstname($data['firstname'] ?? '');
         $client->setLastname($data['lastname'] ?? '');
         $client->setAdresse($data['adresse'] ?? '');
