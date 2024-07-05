@@ -1,0 +1,38 @@
+{# templates/certificate/template.html.twig #}
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body {
+            background: url('{{ asset('Img/certificat.png') }}');
+            background-size: cover;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .content {
+            text-align: center;
+            font-size: 20px;
+            color: #333;
+            background: rgba(255, 255, 255, 0.8); /* Optional: to make the text more readable */
+            padding: 20px;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body>
+<div class="content">
+    <h1>{{ title }}</h1>
+    <h2>{{ name }}</h2>
+    <h3>{{ dimensions }}</h3>
+    <p>Le {{ date }}</p>
+    <h3>{{ medium }}</h3>
+    <p>Identifiant du certificat : {{ id }}</p>
+    <p>{{ generated_at }}</p>
+</div>
+</body>
+</html>
